@@ -1,0 +1,10 @@
+{
+  "name": "leap-motion-audio-filter-js",
+  "version": "0.0.1",
+  "volo": {
+    "baseDir": "src/lib",
+    "dependencies": {
+      "jasmine": "http://github.com/pivotal/jasmine/raw/master/dist/jasmine-standalone-1.3.1.zip"
+    }
+  }
+}
