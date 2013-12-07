@@ -5,5 +5,40 @@
 </head>
 <body>
 
+<p>
+	<label for="quality-range">Quality factor</label>
+	<input id="quality-range" type="range" name="points" min="0" max="100" step="1"/>
+	<label for="frequency-range">Frequency factor</label>
+	<input id="frequency-range" type="range" name="points" min="0" max="100" step="1"/>
+</p>
+<table style="width: 100%">
+	<tr>
+		<td id="left-track">
+			<h2>
+				Left Track
+			</h2>
+			<p>
+				<button id="pause-left">Pause</button>
+			</p>
+		</td>
+		<td id="right-track">
+			<h2>
+				Right Track
+			</h2>
+			<p>
+				<button id="pause-right">Pause</button>
+			</p>
+		</td>
+	</tr>
+</table>
+
+<p>
+	<label for="crossfade-range">Crossfade</label>
+	<input id="crossfade-range" type="range" name="points" min="0" max="100" step="1"/>
+</p>
+
+
+<script src="app/audio/filter.js"></script>
+
 </body>
 </html>
