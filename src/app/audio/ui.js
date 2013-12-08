@@ -6,6 +6,8 @@ function Ui(djConsole) {
 	this._filterTypeSelect = document.getElementById('filter-type');
 	this._filterEnabledCheckBox = document.getElementById('filter-enabled');
 	this._clippingInfo = document.getElementById('clipping-info');
+	this._leftTrackVisualisation = document.getElementById('left-track-visualisation');
+	this._rightTrackVisualisation = document.getElementById('right-track-visualisation');
 
 	this._djConsole = djConsole;
 	this._bind();
@@ -62,6 +64,8 @@ Ui.prototype._update = function () {
 	if (!this._djConsole) {
 		return;
 	}
+	this._djConsole.leftTrack.visualiser.draw(this._leftTrackVisualisation);
+	this._djConsole.rightTrack.visualiser.draw(this._rightTrackVisualisation);
 	this._setPercentValue(this._masterVolumeRange, this._djConsole.getMasterVolume());
 	this._setPercentValue(this._crossfadeRange, this._djConsole.getCrossfade());
 	this._setPercentValue(this._qualityRange, this._djConsole.getQuality());

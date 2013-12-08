@@ -5,6 +5,10 @@
 	<style>
 		table {
 			width: 100%;
+			table-layout: fixed;
+		}
+		canvas {
+			width: 100%;
 		}
 		p,
 		td {
@@ -22,6 +26,7 @@
 	<script src="app/audio/dj-console.js"></script>
 	<script src="app/audio/clipping-monitor.js"></script>
 	<script src="app/audio/track.js"></script>
+	<script src="app/audio/visualiser.js"></script>
 	<script src="app/audio/ui.js"></script>
 	<script src="app/audio/main.js"></script>
 
@@ -76,6 +81,13 @@
 		</td>
 	</tr>
 </table>
+<table>
+	<tr>
+		<td><canvas id="left-track-visualisation"></canvas></td>
+		<td><canvas id="right-track-visualisation"></canvas></td>
+	</tr>
+</table>
+
 
 </body>
 </html>
