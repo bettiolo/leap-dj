@@ -2,8 +2,9 @@ function FilterPad(djConsole, canvas) {
 	this._djConsole = djConsole;
 	this._touches = [];
 	this._canvas = canvas;
-	this._canvas.width = parseInt(window.getComputedStyle(canvas, null).width);
-	this._canvas.height = parseInt(window.getComputedStyle(canvas, null).width);
+	var size = parseInt(window.getComputedStyle(canvas, null).width);
+	this._canvas.width = size;
+	this._canvas.height = size;
 	this._context = this._canvas.getContext('2d');
 	this._setupCanvas();
 }

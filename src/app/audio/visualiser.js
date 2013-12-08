@@ -20,7 +20,7 @@ Visualiser.prototype.getAudioNode = function () {
 
 Visualiser.prototype.draw = function(canvas) {
 	var WIDTH = parseInt(window.getComputedStyle(canvas, null).width);
-	var HEIGHT = parseInt(window.getComputedStyle(canvas, null).height);
+	var HEIGHT = 200;// parseInt(window.getComputedStyle(canvas, null).height);
 	var SMOOTHING = 0.3;
 	var FFT_SIZE = 2048;
 

@@ -30,15 +30,15 @@ Track.prototype.pause = function () {
 };
 
 Track.prototype.toggle = function () {
-	if (this.isPaused()) {
-		this.play();
-	} else {
+	if (this.isPlaying()) {
 		this.pause();
+	} else {
+		this.play();
 	}
 };
 
-Track.prototype.isPaused = function () {
-	return this._audio.paused;
+Track.prototype.isPlaying = function () {
+	return !(this._audio.paused || this._audio.ended);
 };
 
 Track.prototype.setGain = function (fraction) {
