@@ -36,27 +36,44 @@ function DjConsole() {
 	this.setMasterVolume(1); // default volume 100%
 	this.setCrossfade(0); // default crossfade 100% left
 	this.setFilterType(this._biquadFilter.LOWPASS);
+	this.setFrequency(1);
+	this.setQuality(0);
 }
 
 DjConsole.prototype._getValidFraction = function (fraction) {
 	return Math.min(1.0, Math.max(0.0, fraction));
 };
 
-DjConsole.prototype.setQualityFactor = function (fraction) {
-	fraction = this._getValidFraction(fraction);
-	var value = 40 * fraction;
-	this._biquadFilter.Q.value = value;
+DjConsole.prototype.setQuality = function (fraction) {
+	this._qualityFraction = this._getValidFraction(fraction);
+	this._biquadFilter.Q.value = 30 * this._qualityFraction;
 };
 
-DjConsole.prototype.setFrequencyFactor = function (fraction) {
-	fraction = this._getValidFraction(fraction);
-	var value = Math.pow(2, 13 * fraction);
-	this._biquadFilter.frequency.value = value;
+DjConsole.prototype.getQuality = function () {
+	return this._qualityFraction;
 };
+
+DjConsole.prototype.setFrequency = function (fraction) {
+	this._frequencyFraction = this._getValidFraction(fraction);
+	var minValue = 40;
+	var maxValue = this._context.sampleRate / 2;
+	var numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
+	var value = Math.pow(2, numberOfOctaves * (this._frequencyFraction - 1.0));
+	this._biquadFilter.frequency.value = maxValue * value;
+};
+
+DjConsole.prototype.getFrequency = function () {
+	return this._frequencyFraction;
+}
 
 DjConsole.prototype.setFilterType = function (type) {
-	this._biquadFilter.type = type;
-}
+	this._filterType = type;
+	this._biquadFilter.type = this._filterType;
+};
+
+DjConsole.prototype.getFilterType = function () {
+	return this._filterType;
+};
 
 DjConsole.prototype.setCrossfade = function (fraction) {
 	fraction = this._getValidFraction(fraction);
@@ -124,6 +141,9 @@ Track.prototype.setGain = function (fraction) {
 function Ui(djConsole) {
 	this._masterVolumeRange = document.getElementById("master-volume-range");
 	this._crossfadeRange = document.getElementById("crossfade-range");
+	this._qualityRange = document.getElementById("quality-range");
+	this._frequencyRange = document.getElementById("frequency-range");
+	this._filterTypeSelect = document.getElementById("filter-type");
 
 	this._djConsole = djConsole;
 	this._bind();
@@ -151,12 +171,12 @@ Ui.prototype._bind = function () {
 		self._djConsole.rightTrack.toggle();
 	});
 
-	document.getElementById("quality-range").addEventListener('change', function(event) {
-		self._djConsole.setQualityFactor(event.target.value / 100);
+	this._qualityRange.addEventListener('change', function(event) {
+		self._djConsole.setQuality(event.target.value / 100);
 	});
 
-	document.getElementById("frequency-range").addEventListener('change', function(event) {
-		self._djConsole.setFrequencyFactor(event.target.value / 100);
+	this._frequencyRange.addEventListener('change', function(event) {
+		self._djConsole.setFrequency(event.target.value / 100);
 	});
 
 	this._crossfadeRange.addEventListener('change', function(event) {
@@ -167,7 +187,7 @@ Ui.prototype._bind = function () {
 		self._djConsole.setMasterVolume(event.target.value / 100);
 	});
 
-	document.getElementById("filter-type").addEventListener('change', function(event) {
+	this._filterTypeSelect.addEventListener('change', function(event) {
 		self._djConsole.setFilterType(parseInt(event.target.value));
 	});
 };
@@ -176,14 +196,22 @@ Ui.prototype._update = function () {
 	if (!this._djConsole) {
 		return;
 	}
-	this._setRangeValue(this._masterVolumeRange, this._djConsole.getMasterVolume());
-	this._setRangeValue(this._crossfadeRange, this._djConsole.getCrossfade());
+	this._setPercentValue(this._masterVolumeRange, this._djConsole.getMasterVolume());
+	this._setPercentValue(this._crossfadeRange, this._djConsole.getCrossfade());
+	this._setPercentValue(this._qualityRange, this._djConsole.getQuality());
+	this._setPercentValue(this._frequencyRange, this._djConsole.getFrequency());
+	this._setValue(this._filterTypeSelect, this._djConsole.getFilterType());
 };
 
-Ui.prototype._setRangeValue = function (rangeElement, fraction) {
-	var newValue = (fraction * 100).toFixed(2);
-	if (parseFloat(rangeElement.value).toFixed(2) != newValue) {
-		console.log('Updated: ' + rangeElement.id + ' to ' + newValue + '%');
-		rangeElement.value = newValue;
+Ui.prototype._setPercentValue = function (element, fraction) {
+	this._setValue(element, fraction * 100);
+};
+
+Ui.prototype._setValue = function (element, value) {
+	var oldValue = Math.round(element.value);
+	value = Math.round(value);
+	if (oldValue != value) {
+		console.log('Updated: ' + element.id + ' from ' + element.value + ' to ' + value + '%');
+		element.value = value;
 	}
 };
