@@ -15,10 +15,9 @@
 <body>
 
 <p>
-	<label for="quality-range">Quality factor</label>
-	<input id="quality-range" type="range" name="points" min="0" max="100" step="1"/>
-	<label for="frequency-range">Frequency factor</label>
-	<input id="frequency-range" type="range" name="points" min="0" max="100" step="1"/>
+	<label for="filter-enabled">Enable filter</label>
+	<input id="filter-enabled" type="checkbox"/>
+	<label for="filter-type">Filter type</label>
 	<select id="filter-type">
 		<option value="7">ALLPASS</option>
 		<option value="2">BANDPASS</option>
@@ -30,37 +29,36 @@
 		<option value="5">PEAKING</option>
 	</select>
 </p>
+<p>
+	<label for="quality-range">Quality factor</label>
+	<input id="quality-range" type="range" name="points" min="0" max="100" step="1"/>
+	<label for="frequency-range">Frequency factor</label>
+	<input id="frequency-range" type="range" name="points" min="0" max="100" step="1"/>
+</p>
 <table>
 	<tr>
 		<td id="left-track">
-			<h2>
-				Left Track
-			</h2>
+			<h2>Left Track</h2>
+			<p id="left-track-info">n/a</p>
+			<p><button id="pause-left">Pause</button></p>
+		</td>
+		<td>
 			<p>
-				<button id="pause-left">Pause</button>
+				<label for="crossfade-range">Crossfade</label>
+				<input id="crossfade-range" type="range" name="points" min="0" max="100" step="1"/>
+			</p>
+			<p>
+				<label for="master-volume-range">Master volume</label>
+				<input id="master-volume-range" type="range" name="points" min="0" max="100" step="1"/>
 			</p>
 		</td>
 		<td id="right-track">
-			<h2>
-				Right Track
-			</h2>
-			<p>
-				<button id="pause-right">Pause</button>
-			</p>
+			<h2>Right Track</h2>
+			<p id="right-track-info">n/a</p>
+			<p><button id="pause-right">Pause</button></p>
 		</td>
 	</tr>
 </table>
-
-<p>
-	<label for="crossfade-range">Crossfade</label>
-	<input id="crossfade-range" type="range" name="points" min="0" max="100" step="1"/>
-</p>
-
-<p>
-	<label for="master-volume-range">Master volume</label>
-	<input id="master-volume-range" type="range" name="points" min="0" max="100" step="1"/>
-</p>
-
 
 <script src="app/audio/filter.js"></script>
 

@@ -14,8 +14,8 @@ function init() {
 	var djConsole = new DjConsole();
 	var ui = new Ui(djConsole);
 
-	djConsole.leftTrack.setSrc('music/track5.mp3');
-	djConsole.rightTrack.setSrc('music/track5-copy.mp3');
+	djConsole.leftTrack.setSrc('music/track4.mp3');
+	djConsole.rightTrack.setSrc('music/track5.mp3');
 	djConsole.leftTrack.play();
 	djConsole.rightTrack.play();
 }
@@ -25,20 +25,33 @@ function DjConsole() {
 	this._gain = this._context.createGainNode();
 	this._gain.connect(this._context.destination);
 	this._biquadFilter = this._context.createBiquadFilter();
-	this._biquadFilter.connect(this._gain);
-
 	this.leftTrack = new Track(this._context);
-	this.leftTrack.connect(this._biquadFilter);
-
 	this.rightTrack = new Track(this._context);
-	this.rightTrack.connect(this._biquadFilter);
 
 	this.setMasterVolume(1); // default volume 100%
 	this.setCrossfade(0); // default crossfade 100% left
+	this.setFilterEnabled(false);
 	this.setFilterType(this._biquadFilter.LOWPASS);
-	this.setFrequency(1);
-	this.setQuality(0);
+	this.setFrequency(0.6);
+	this.setQuality(0.75);
 }
+
+DjConsole.prototype.setFilterEnabled = function (enabled) {
+	this._filterEnabled = enabled;
+	this._biquadFilter.disconnect();
+	if (enabled) {
+		this._biquadFilter.connect(this._gain);
+		this.leftTrack.connect(this._biquadFilter);
+		this.rightTrack.connect(this._biquadFilter);
+	} else {
+		this.leftTrack.connect(this._gain);
+		this.rightTrack.connect(this._gain);
+	}
+};
+
+DjConsole.prototype.getFilterEnabled = function () {
+	return this._filterEnabled;
+};
 
 DjConsole.prototype._getValidFraction = function (fraction) {
 	return Math.min(1.0, Math.max(0.0, fraction));
@@ -107,6 +120,7 @@ function Track(context) {
 }
 
 Track.prototype.connect = function (audioNode) {
+	this._gain.disconnect();
 	this._gain.connect(audioNode);
 };
 
@@ -139,11 +153,12 @@ Track.prototype.setGain = function (fraction) {
 };
 
 function Ui(djConsole) {
-	this._masterVolumeRange = document.getElementById("master-volume-range");
-	this._crossfadeRange = document.getElementById("crossfade-range");
-	this._qualityRange = document.getElementById("quality-range");
-	this._frequencyRange = document.getElementById("frequency-range");
-	this._filterTypeSelect = document.getElementById("filter-type");
+	this._masterVolumeRange = document.getElementById('master-volume-range');
+	this._crossfadeRange = document.getElementById('crossfade-range');
+	this._qualityRange = document.getElementById('quality-range');
+	this._frequencyRange = document.getElementById('frequency-range');
+	this._filterTypeSelect = document.getElementById('filter-type');
+	this._filterEnabledCheckBox = document.getElementById('filter-enabled');
 
 	this._djConsole = djConsole;
 	this._bind();
@@ -190,6 +205,10 @@ Ui.prototype._bind = function () {
 	this._filterTypeSelect.addEventListener('change', function(event) {
 		self._djConsole.setFilterType(parseInt(event.target.value));
 	});
+
+	this._filterEnabledCheckBox.addEventListener('change', function(event) {
+		self._djConsole.setFilterEnabled(event.target.checked);
+	});
 };
 
 Ui.prototype._update = function () {
@@ -201,6 +220,7 @@ Ui.prototype._update = function () {
 	this._setPercentValue(this._qualityRange, this._djConsole.getQuality());
 	this._setPercentValue(this._frequencyRange, this._djConsole.getFrequency());
 	this._setValue(this._filterTypeSelect, this._djConsole.getFilterType());
+	this._setCheckBox(this._filterEnabledCheckBox, this._djConsole.getFilterEnabled());
 };
 
 Ui.prototype._setPercentValue = function (element, fraction) {
@@ -213,5 +233,12 @@ Ui.prototype._setValue = function (element, value) {
 	if (oldValue != value) {
 		console.log('Updated: ' + element.id + ' from ' + element.value + ' to ' + value + '%');
 		element.value = value;
+	}
+};
+
+Ui.prototype._setCheckBox = function (element, checked) {
+	if (element.checked != checked) {
+		console.log('Updated: ' + element.id + ' from ' + element.checked + ' to ' + checked);
+		element.checked = checked;
 	}
 };
