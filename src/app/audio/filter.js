@@ -33,6 +33,10 @@ function init() {
 		djConsole.setCrossfade(event.target.value / 100);
 	});
 
+	document.getElementById("master-volume-range").addEventListener('change', function(event) {
+		djConsole.setMasterVolume(event.target.value / 100);
+	});
+
 	djConsole.leftTrack.setSrc('music/track5.mp3');
 	djConsole.rightTrack.setSrc('music/track4.mp3');
 	djConsole.leftTrack.play();
@@ -41,7 +45,7 @@ function init() {
 
 function DjConsole() {
 	this._context = new webkitAudioContext();
-	this._gain = new this._context.createGainNode();
+	this._gain = this._context.createGainNode();
 	this._gain.connect(this._context.destination);
 	this._biquadFilter = this._context.createBiquadFilter();
 	this._biquadFilter.connect(this._gain);
@@ -53,24 +57,34 @@ function DjConsole() {
 	this.rightTrack.connect(this._biquadFilter);
 }
 
-DjConsole.prototype.setQualityFactor = function (percent) {
-	percent = Math.min(1.0, Math.max(0.0, percent));
-	var value = 40 * percent;
-	console.log('quality: ' + percent + '=' + value);
+DjConsole.prototype.setQualityFactor = function (fraction) {
+	fraction = Math.min(1.0, Math.max(0.0, fraction));
+	var value = 40 * fraction;
+	console.log('quality: ' + fraction + '=' + value);
 	this._biquadFilter.Q.value = value;
 };
 
-DjConsole.prototype.setFrequencyFactor = function (percent) {
-	var value = Math.pow(2, 13 * percent);
-	console.log('frequency: ' + percent + '=' + value);
+DjConsole.prototype.setFrequencyFactor = function (fraction) {
+	var value = Math.pow(2, 13 * fraction);
+	console.log('frequency: ' + fraction + '=' + value);
 	this._biquadFilter.frequency.value = value;
 };
 
-DjConsole.prototype.setCrossfade = function (percent) {
-	var gain1 = Math.cos(percent * 0.5 * Math.PI);
-	var gain2 = Math.cos((1.0 - percent) * 0.5 * Math.PI);
+DjConsole.prototype.setCrossfade = function (fraction) {
+	var gain1 = Math.cos(fraction * 0.5 * Math.PI);
+	var gain2 = Math.cos((1.0 - fraction) * 0.5 * Math.PI);
 	this.leftTrack.setGain(gain1);
 	this.rightTrack.setGain(gain2);
+};
+
+DjConsole.prototype.setMasterVolume = function (fraction) {
+	this._gainFraction = fraction;
+	var value = fraction * fraction;
+	this._gain.gain.value = value;
+};
+
+DjConsole.prototype.getMasterVolume = function () {
+	return this._gainFraction;
 };
 
 function Track(context) {
@@ -108,8 +122,8 @@ Track.prototype.isPaused = function () {
 	return this._audio.paused;
 };
 
-Track.prototype.setGain = function (percent) {
-	this._gain.gain.value = percent;
+Track.prototype.setGain = function (fraction) {
+	this._gain.gain.value = fraction;
 };
 
 function Ui() {
