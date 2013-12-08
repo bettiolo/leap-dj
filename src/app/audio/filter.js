@@ -12,35 +12,11 @@ function init() {
 	//			'?client_id=YOUR_CLIENT_ID';
 
 	var djConsole = new DjConsole();
-
-	document.getElementById("pause-left").addEventListener('click', function() {
-		djConsole.leftTrack.toggle();
-	});
-
-	document.getElementById("pause-right").addEventListener('click', function() {
-		djConsole.rightTrack.toggle();
-	});
-
-	document.getElementById("quality-range").addEventListener('change', function(event) {
-		djConsole.setQualityFactor(event.target.value / 100);
-	});
-
-	document.getElementById("frequency-range").addEventListener('change', function(event) {
-		djConsole.setFrequencyFactor(event.target.value / 100);
-	});
-
-	document.getElementById("crossfade-range").addEventListener('change', function(event) {
-		djConsole.setCrossfade(event.target.value / 100);
-	});
-
-	document.getElementById("master-volume-range").addEventListener('change', function(event) {
-		djConsole.setMasterVolume(event.target.value / 100);
-	});
+	var ui = new Ui(djConsole);
 
 	djConsole.leftTrack.setSrc('music/track5.mp3');
 	djConsole.rightTrack.setSrc('music/track4.mp3');
 	djConsole.leftTrack.play();
-
 }
 
 function DjConsole() {
@@ -126,7 +102,9 @@ Track.prototype.setGain = function (fraction) {
 	this._gain.gain.value = fraction;
 };
 
-function Ui() {
+function Ui(djConsole) {
+	this._djConsole = djConsole;
+	this._bind();
 //	this._timer =
 //		window.requestAnimationFrame       ||
 //		window.webkitRequestAnimationFrame ||
@@ -137,3 +115,34 @@ function Ui() {
 //			window.setTimeout(callback, 1000 / 60);
 //		};
 }
+
+Ui.prototype._bind = function () {
+	var self = this;
+	document.getElementById("pause-left").addEventListener('click', function() {
+		self._djConsole.leftTrack.toggle();
+	});
+
+	document.getElementById("pause-right").addEventListener('click', function() {
+		self._djConsole.rightTrack.toggle();
+	});
+
+	document.getElementById("quality-range").addEventListener('change', function(event) {
+		self._djConsole.setQualityFactor(event.target.value / 100);
+	});
+
+	document.getElementById("frequency-range").addEventListener('change', function(event) {
+		self._djConsole.setFrequencyFactor(event.target.value / 100);
+	});
+
+	document.getElementById("crossfade-range").addEventListener('change', function(event) {
+		self._djConsole.setCrossfade(event.target.value / 100);
+	});
+
+	document.getElementById("master-volume-range").addEventListener('change', function(event) {
+		self._djConsole.setMasterVolume(event.target.value / 100);
+	});
+};
+
+Ui.prototype._update = function () {
+
+};
