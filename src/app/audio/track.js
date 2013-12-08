@@ -10,8 +10,8 @@ function Track(context) {
 }
 
 Track.prototype.connect = function (audioNode) {
-//	this._gain.disconnect();
-//	this._gain.connect(audioNode);
+	//	this._gain.disconnect();
+	//	this._gain.connect(audioNode);
 	// this.visualiser.disconnect();
 	this.visualiser.connect(audioNode);
 
