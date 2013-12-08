@@ -7,10 +7,6 @@ window.onload = function () {
 };
 
 function init() {
-	// requesting http://api.soundcloud.com/tracks/6981096.json
-	//		url = 'http://api.soundcloud.com/tracks/6981096/stream' +
-	//			'?client_id=YOUR_CLIENT_ID';
-
 	var djConsole = new DjConsole();
 	var ui = new Ui(djConsole);
 
@@ -19,4 +15,3 @@ function init() {
 	djConsole.leftTrack.play();
 	djConsole.rightTrack.play();
 }
-

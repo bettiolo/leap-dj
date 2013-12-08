@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Dj Console</title>
 	<style>
 		table {
 			width: 100%;
@@ -10,7 +10,21 @@
 		td {
 			text-align: center;
 		}
+		#clipping-info {
+			font-weight: bold;
+			background-color: red;
+		}
+		#clipping-info.not-clipping {
+			visibility: hidden;
+		}
 	</style>
+
+	<script src="app/audio/dj-console.js"></script>
+	<script src="app/audio/clipping-monitor.js"></script>
+	<script src="app/audio/track.js"></script>
+	<script src="app/audio/ui.js"></script>
+	<script src="app/audio/main.js"></script>
+
 </head>
 <body>
 
@@ -51,6 +65,9 @@
 				<label for="master-volume-range">Master & Gain</label>
 				<input id="master-volume-range" type="range" name="points" min="0" max="200" step="1"/>
 			</p>
+			<p id="clipping-info">
+				Clipping
+			</p>
 		</td>
 		<td id="right-track">
 			<h2>Right Track</h2>
@@ -59,11 +76,6 @@
 		</td>
 	</tr>
 </table>
-
-<script src="app/audio/dj-console.js"></script>
-<script src="app/audio/track.js"></script>
-<script src="app/audio/ui.js"></script>
-<script src="app/audio/filter.js"></script>
 
 </body>
 </html>

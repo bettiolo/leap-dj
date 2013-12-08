@@ -1,7 +1,13 @@
 function DjConsole() {
+	var self = this;
 	this._context = new webkitAudioContext();
+	this.clippingMonitor = new ClippingMonitor(this._context);
+	this.clippingMonitor.connect(this._context.destination);
 	this._gain = this._context.createGainNode();
+	this._gain.connect(this.clippingMonitor.getAudioNode());
 	this._gain.connect(this._context.destination);
+
+
 	this._biquadFilter = this._context.createBiquadFilter();
 	this.leftTrack = new Track(this._context);
 	this.rightTrack = new Track(this._context);

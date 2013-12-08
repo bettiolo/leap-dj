@@ -5,6 +5,7 @@ function Ui(djConsole) {
 	this._frequencyRange = document.getElementById('frequency-range');
 	this._filterTypeSelect = document.getElementById('filter-type');
 	this._filterEnabledCheckBox = document.getElementById('filter-enabled');
+	this._clippingInfo = document.getElementById('clipping-info');
 
 	this._djConsole = djConsole;
 	this._bind();
@@ -67,6 +68,11 @@ Ui.prototype._update = function () {
 	this._setPercentValue(this._frequencyRange, this._djConsole.getFrequency());
 	this._setValue(this._filterTypeSelect, this._djConsole.getFilterType());
 	this._setCheckBox(this._filterEnabledCheckBox, this._djConsole.getFilterEnabled());
+	if (this._djConsole.clippingMonitor.isClipping()) {
+		this._clippingInfo.className = 'clipping';
+	} else {
+		this._clippingInfo.className = 'not-clipping';
+	}
 };
 
 Ui.prototype._setPercentValue = function (element, fraction) {

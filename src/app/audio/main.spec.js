@@ -1,4 +1,4 @@
-describe('Filter', function (){
+describe('Main', function (){
 
 	it('Fails', function () {
 
