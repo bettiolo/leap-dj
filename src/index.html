@@ -2,6 +2,15 @@
 <html>
 <head>
 	<title></title>
+	<style>
+		table {
+			width: 100%;
+		}
+		p,
+		td {
+			text-align: center;
+		}
+	</style>
 </head>
 <body>
 
@@ -11,7 +20,7 @@
 	<label for="frequency-range">Frequency factor</label>
 	<input id="frequency-range" type="range" name="points" min="0" max="100" step="1"/>
 </p>
-<table style="width: 100%">
+<table>
 	<tr>
 		<td id="left-track">
 			<h2>
@@ -35,6 +44,11 @@
 <p>
 	<label for="crossfade-range">Crossfade</label>
 	<input id="crossfade-range" type="range" name="points" min="0" max="100" step="1"/>
+</p>
+
+<p>
+	<label for="master-volume-range">Master volume</label>
+	<input id="master-volume-range" type="range" name="points" min="0" max="100" step="1"/>
 </p>
 
 
