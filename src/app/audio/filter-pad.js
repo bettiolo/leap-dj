@@ -27,21 +27,34 @@ FilterPad.prototype.draw = function () {
 								   this._canvas.width / 4, this._canvas.height / 4);
 		}
 	}
-	for(var i = 0; i < this._touches.length; i++)
-	{
-		var touch = this._touches[i];
-		var x = touch.x;
-		var y = touch.y;
-		this._context.beginPath();
-		this._context.fillStyle = "black";
-		this._context.fillText( " id: " + touch.pointerId + " x: " + Math.round(x) + " y: " + Math.round(y), x + 20, y - 10);
+//	for(var i = 0; i < this._touches.length; i++)
+//	{
+//		var touch = this._touches[i];
+//		var x = touch.x;
+//		var y = touch.y;
+//		this._context.beginPath();
+//		this._context.fillStyle = "black";
+//		this._context.fillText( " id: " + touch.pointerId + " x: " + Math.round(x) + " y: " + Math.round(y), x + 20, y - 10);
+//
+//		this._context.beginPath();
+//		this._context.strokeStyle = "black";
+//		this._context.lineWidth = "6";
+//		this._context.arc(x, y, 20, 0, Math.PI * 2, true);
+//		this._context.stroke();
+//	}
+	var x = this._djConsole.getQuality() * this._canvas.width;
+	var y = (1 - this._djConsole.getFrequency()) * this._canvas.height;
 
-		this._context.beginPath();
-		this._context.strokeStyle = "black";
-		this._context.lineWidth = "6";
-		this._context.arc(x, y, 20, 0, Math.PI * 2, true);
-		this._context.stroke();
-	}
+	this._context.beginPath();
+	this._context.fillStyle = "black";
+	this._context.fillText( " x: " + Math.round(x) + " y: " + Math.round(y), x + 20, y - 10);
+
+	this._context.beginPath();
+	this._context.strokeStyle = "black";
+	this._context.lineWidth = "6";
+	this._context.arc(x, y, 20, 0, Math.PI * 2, true);
+	this._context.stroke();
+
 };
 
 FilterPad.prototype._onPointerDown = function (e) {

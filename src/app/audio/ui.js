@@ -12,18 +12,8 @@ function Ui(djConsole) {
 	this._djConsole = djConsole;
 	this._filterPad = new FilterPad(djConsole, document.getElementById('filter-pad'));
 	this._bind();
-	this._uiUpdater =
-		window.requestAnimationFrame       ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame    ||
-			window.oRequestAnimationFrame      ||
-			window.msRequestAnimationFrame     ||
-			function (callback){
-				window.setTimeout(callback, 1000 / 60);
-			};
 	var self = this;
-	// this._uiUpdater(function () { self._update(); });
-	window.setInterval(function () { self._update() }, 1000 / 60);
+	window.requestAnimationFrame(function () { self._update(); });
 }
 
 Ui.prototype._bind = function () {
@@ -79,6 +69,9 @@ Ui.prototype._update = function () {
 		this._clippingInfo.className = 'not-clipping';
 	}
 	this._filterPad.draw();
+
+	var self = this;
+	window.requestAnimationFrame(function () { self._update(); });
 };
 
 Ui.prototype._setPercentValue = function (element, fraction) {
@@ -89,14 +82,14 @@ Ui.prototype._setValue = function (element, value) {
 	var oldValue = Math.round(element.value);
 	value = Math.round(value);
 	if (oldValue != value) {
-		console.log('Updated: ' + element.id + ' from ' + element.value + '% to ' + value + '%');
+		// console.log('Updated: ' + element.id + ' from ' + element.value + '% to ' + value + '%');
 		element.value = value;
 	}
 };
 
 Ui.prototype._setCheckBox = function (element, checked) {
 	if (element.checked != checked) {
-		console.log('Updated: ' + element.id + ' from ' + element.checked + ' to ' + checked);
+		// console.log('Updated: ' + element.id + ' from ' + element.checked + ' to ' + checked);
 		element.checked = checked;
 	}
 };

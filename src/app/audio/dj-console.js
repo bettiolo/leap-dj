@@ -21,6 +21,9 @@ function DjConsole() {
 }
 
 DjConsole.prototype.setFilterEnabled = function (enabled) {
+	if (this._filterEnabled === enabled) {
+		return;
+	}
 	this._filterEnabled = enabled;
 	this._biquadFilter.disconnect();
 	if (enabled) {
@@ -39,7 +42,13 @@ DjConsole.prototype.getFilterEnabled = function () {
 
 DjConsole.prototype._getValidFraction = function (fraction, max) {
 	max = max || 1.0;
-	return Math.min(max, Math.max(0.0, fraction));
+	if (fraction < 0) {
+		fraction = 0.0;
+	}
+	if (fraction > max) {
+		fraction = max;
+	}
+	return fraction;
 };
 
 DjConsole.prototype.setQuality = function (fraction) {
