@@ -31,36 +31,42 @@ function DjConsole() {
 
 	this.rightTrack = new Track(this._context);
 	this.rightTrack.connect(this._biquadFilter);
+
+	this.setMasterVolume(1); // default volume 100%
+	this.setCrossfade(0); // default crossfade 100% left
 }
 
 DjConsole.prototype.setQualityFactor = function (fraction) {
 	fraction = Math.min(1.0, Math.max(0.0, fraction));
 	var value = 40 * fraction;
-	console.log('quality: ' + fraction + '=' + value);
 	this._biquadFilter.Q.value = value;
 };
 
 DjConsole.prototype.setFrequencyFactor = function (fraction) {
 	var value = Math.pow(2, 13 * fraction);
-	console.log('frequency: ' + fraction + '=' + value);
 	this._biquadFilter.frequency.value = value;
 };
 
 DjConsole.prototype.setCrossfade = function (fraction) {
+	this._crossfadeFraction = fraction;
 	var gain1 = Math.cos(fraction * 0.5 * Math.PI);
 	var gain2 = Math.cos((1.0 - fraction) * 0.5 * Math.PI);
 	this.leftTrack.setGain(gain1);
 	this.rightTrack.setGain(gain2);
 };
 
+DjConsole.prototype.getCrossfade = function () {
+	return this._crossfadeFraction;
+};
+
 DjConsole.prototype.setMasterVolume = function (fraction) {
-	this._gainFraction = fraction;
+	this._masterGainFraction = fraction;
 	var value = fraction * fraction;
 	this._gain.gain.value = value;
 };
 
 DjConsole.prototype.getMasterVolume = function () {
-	return this._gainFraction;
+	return this._masterGainFraction;
 };
 
 function Track(context) {
@@ -103,17 +109,23 @@ Track.prototype.setGain = function (fraction) {
 };
 
 function Ui(djConsole) {
+	this._masterVolumeRange = document.getElementById("master-volume-range");
+	this._crossfadeRange = document.getElementById("crossfade-range");
+
 	this._djConsole = djConsole;
 	this._bind();
-//	this._timer =
-//		window.requestAnimationFrame       ||
-//		window.webkitRequestAnimationFrame ||
-//		window.mozRequestAnimationFrame    ||
-//		window.oRequestAnimationFrame      ||
-//		window.msRequestAnimationFrame     ||
-//		function( callback ){
-//			window.setTimeout(callback, 1000 / 60);
-//		};
+	this._uiUpdater =
+		window.requestAnimationFrame       ||
+		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame    ||
+		window.oRequestAnimationFrame      ||
+		window.msRequestAnimationFrame     ||
+		function (callback){
+			window.setTimeout(callback, 1000 / 60);
+		};
+	var self = this;
+	// this._uiUpdater(function () { self._update(); });
+	window.setInterval(function () { self._update() }, 1000 / 60);
 }
 
 Ui.prototype._bind = function () {
@@ -134,15 +146,26 @@ Ui.prototype._bind = function () {
 		self._djConsole.setFrequencyFactor(event.target.value / 100);
 	});
 
-	document.getElementById("crossfade-range").addEventListener('change', function(event) {
+	this._crossfadeRange.addEventListener('change', function(event) {
 		self._djConsole.setCrossfade(event.target.value / 100);
 	});
 
-	document.getElementById("master-volume-range").addEventListener('change', function(event) {
+	this._masterVolumeRange.addEventListener('change', function(event) {
 		self._djConsole.setMasterVolume(event.target.value / 100);
 	});
 };
 
 Ui.prototype._update = function () {
+	if (!this._djConsole) {
+		return;
+	}
+	this._setRangeValue(this._masterVolumeRange, this._djConsole.getMasterVolume());
+	this._setRangeValue(this._crossfadeRange, this._djConsole.getCrossfade());
+};
 
+Ui.prototype._setRangeValue = function (rangeElement, fraction) {
+	var newValue = fraction * 100;
+	if (rangeElement.value != newValue) {
+		rangeElement.value = newValue;
+	}
 };
