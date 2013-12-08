@@ -53,8 +53,9 @@ DjConsole.prototype.getFilterEnabled = function () {
 	return this._filterEnabled;
 };
 
-DjConsole.prototype._getValidFraction = function (fraction) {
-	return Math.min(1.0, Math.max(0.0, fraction));
+DjConsole.prototype._getValidFraction = function (fraction, max) {
+	max = max || 1.0;
+	return Math.min(max, Math.max(0.0, fraction));
 };
 
 DjConsole.prototype.setQuality = function (fraction) {
@@ -102,7 +103,7 @@ DjConsole.prototype.getCrossfade = function () {
 };
 
 DjConsole.prototype.setMasterVolume = function (fraction) {
-	fraction = this._getValidFraction(fraction);
+	fraction = this._getValidFraction(fraction, 2.0);
 	this._masterGainFraction = fraction;
 	var value = fraction * fraction;
 	this._gain.gain.value = value;
@@ -231,7 +232,7 @@ Ui.prototype._setValue = function (element, value) {
 	var oldValue = Math.round(element.value);
 	value = Math.round(value);
 	if (oldValue != value) {
-		console.log('Updated: ' + element.id + ' from ' + element.value + ' to ' + value + '%');
+		console.log('Updated: ' + element.id + ' from ' + element.value + '% to ' + value + '%');
 		element.value = value;
 	}
 };
