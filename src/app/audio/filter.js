@@ -36,18 +36,24 @@ function DjConsole() {
 	this.setCrossfade(0); // default crossfade 100% left
 }
 
+DjConsole.prototype._getValidFraction = function (fraction) {
+	return Math.min(1.0, Math.max(0.0, fraction));
+};
+
 DjConsole.prototype.setQualityFactor = function (fraction) {
-	fraction = Math.min(1.0, Math.max(0.0, fraction));
+	fraction = this._getValidFraction(fraction);
 	var value = 40 * fraction;
 	this._biquadFilter.Q.value = value;
 };
 
 DjConsole.prototype.setFrequencyFactor = function (fraction) {
+	fraction = this._getValidFraction(fraction);
 	var value = Math.pow(2, 13 * fraction);
 	this._biquadFilter.frequency.value = value;
 };
 
 DjConsole.prototype.setCrossfade = function (fraction) {
+	fraction = this._getValidFraction(fraction);
 	this._crossfadeFraction = fraction;
 	var gain1 = Math.cos(fraction * 0.5 * Math.PI);
 	var gain2 = Math.cos((1.0 - fraction) * 0.5 * Math.PI);
@@ -60,6 +66,7 @@ DjConsole.prototype.getCrossfade = function () {
 };
 
 DjConsole.prototype.setMasterVolume = function (fraction) {
+	fraction = this._getValidFraction(fraction);
 	this._masterGainFraction = fraction;
 	var value = fraction * fraction;
 	this._gain.gain.value = value;
@@ -76,8 +83,8 @@ function Track(context) {
 	this._source.connect(this._gain);
 }
 
-Track.prototype.connect = function (node) {
-	this._gain.connect(node);
+Track.prototype.connect = function (audioNode) {
+	this._gain.connect(audioNode);
 };
 
 Track.prototype.setSrc = function (src) {
