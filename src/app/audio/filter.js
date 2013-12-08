@@ -15,8 +15,9 @@ function init() {
 	var ui = new Ui(djConsole);
 
 	djConsole.leftTrack.setSrc('music/track5.mp3');
-	djConsole.rightTrack.setSrc('music/track4.mp3');
+	djConsole.rightTrack.setSrc('music/track5-copy.mp3');
 	djConsole.leftTrack.play();
+	djConsole.rightTrack.play();
 }
 
 function DjConsole() {
@@ -34,6 +35,7 @@ function DjConsole() {
 
 	this.setMasterVolume(1); // default volume 100%
 	this.setCrossfade(0); // default crossfade 100% left
+	this.setFilterType(this._biquadFilter.LOWPASS);
 }
 
 DjConsole.prototype._getValidFraction = function (fraction) {
@@ -51,6 +53,10 @@ DjConsole.prototype.setFrequencyFactor = function (fraction) {
 	var value = Math.pow(2, 13 * fraction);
 	this._biquadFilter.frequency.value = value;
 };
+
+DjConsole.prototype.setFilterType = function (type) {
+	this._biquadFilter.type = type;
+}
 
 DjConsole.prototype.setCrossfade = function (fraction) {
 	fraction = this._getValidFraction(fraction);
@@ -160,6 +166,10 @@ Ui.prototype._bind = function () {
 	this._masterVolumeRange.addEventListener('change', function(event) {
 		self._djConsole.setMasterVolume(event.target.value / 100);
 	});
+
+	document.getElementById("filter-type").addEventListener('change', function(event) {
+		self._djConsole.setFilterType(parseInt(event.target.value));
+	});
 };
 
 Ui.prototype._update = function () {
@@ -171,8 +181,9 @@ Ui.prototype._update = function () {
 };
 
 Ui.prototype._setRangeValue = function (rangeElement, fraction) {
-	var newValue = fraction * 100;
-	if (rangeElement.value != newValue) {
+	var newValue = (fraction * 100).toFixed(2);
+	if (parseFloat(rangeElement.value).toFixed(2) != newValue) {
+		console.log('Updated: ' + rangeElement.id + ' to ' + newValue + '%');
 		rangeElement.value = newValue;
 	}
 };
