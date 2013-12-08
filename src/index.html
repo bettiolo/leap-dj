@@ -10,6 +10,9 @@
 		canvas {
 			width: 100%;
 		}
+		canvas#filter-pad {
+			width: 50%;
+		}
 		p,
 		td {
 			text-align: center;
@@ -23,11 +26,13 @@
 		}
 	</style>
 
+	<script src="lib/pointer-events.js"></script>
 	<script src="app/audio/dj-console.js"></script>
 	<script src="app/audio/clipping-monitor.js"></script>
 	<script src="app/audio/track.js"></script>
 	<script src="app/audio/visualiser.js"></script>
 	<script src="app/audio/ui.js"></script>
+	<script src="app/audio/filter-pad.js"></script>
 	<script src="app/audio/main.js"></script>
 
 </head>
@@ -88,6 +93,9 @@
 	</tr>
 </table>
 
+<p>
+	<canvas id="filter-pad"></canvas>
+</p>
 
 </body>
 </html>

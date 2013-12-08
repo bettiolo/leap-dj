@@ -10,6 +10,7 @@ function Ui(djConsole) {
 	this._rightTrackVisualisation = document.getElementById('right-track-visualisation');
 
 	this._djConsole = djConsole;
+	this._filterPad = new FilterPad(djConsole, document.getElementById('filter-pad'));
 	this._bind();
 	this._uiUpdater =
 		window.requestAnimationFrame       ||
@@ -77,6 +78,7 @@ Ui.prototype._update = function () {
 	} else {
 		this._clippingInfo.className = 'not-clipping';
 	}
+	this._filterPad.draw();
 };
 
 Ui.prototype._setPercentValue = function (element, fraction) {
