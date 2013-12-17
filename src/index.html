@@ -7,6 +7,9 @@
 			width: 100%;
 			table-layout: fixed;
 		}
+		.hidden {
+			display: none;
+		}
 		canvas {
 			width: 100%;
 		}
@@ -45,61 +48,69 @@
 	<script src="app/audio/track-info.js"></script>
 </head>
 <body>
+<section id="main-section" class="hidden">
 
-<p>
-	<label for="filter-enabled">Enable filter</label>
-	<input id="filter-enabled" type="checkbox"/>
-	<label for="filter-type">Filter type</label>
-	<select id="filter-type">
-		<option value="1">HIGHPASS</option>
-		<option value="0">LOWPASS</option>
-	</select>
-</p>
-<p>
-	<label for="quality-range">Quality</label>
-	<input id="quality-range" type="range" name="points" min="0" max="100" step="1"/>
-	<label for="frequency-range">Frequency</label>
-	<input id="frequency-range" type="range" name="points" min="0" max="100" step="1"/>
-</p>
-<table>
-	<tr>
-		<td id="left-track">
-			<h3 id="left-track-title">Left Track</h3>
-			<p><button id="pause-left">Pause</button></p>
-		</td>
-		<td>
-			<p>
-				<label for="crossfade-range">Crossfade</label>
-				<input id="crossfade-range" type="range" name="points" min="0" max="100" step="1"/>
-			</p>
-			<p>
-				<label for="master-volume-range">Master & Gain</label>
-				<input id="master-volume-range" type="range" name="points" min="0" max="200" step="1"/>
-			</p>
-			<p id="clipping-info">
-				Clipping
-			</p>
-		</td>
-		<td id="right-track">
-			<h3 id="right-track-title">Right Track</h3>
-			<p><button id="pause-right">Pause</button></p>
-		</td>
-	</tr>
-</table>
-<table>
-	<tr>
-		<td><canvas id="left-track-visualisation"></canvas></td>
-		<td><canvas id="right-track-visualisation"></canvas></td>
-	</tr>
-</table>
+	<p>
+		<label for="filter-enabled">Enable filter</label>
+		<input id="filter-enabled" type="checkbox"/>
+		<label for="filter-type">Filter type</label>
+		<select id="filter-type">
+			<option value="1">HIGHPASS</option>
+			<option value="0">LOWPASS</option>
+		</select>
+	</p>
 
-<p>
-	<canvas id="filter-pad"></canvas>
-</p>
+	<p>
+		<label for="quality-range">Quality</label>
+		<input id="quality-range" type="range" name="points" min="0" max="100" step="1"/>
+		<label for="frequency-range">Frequency</label>
+		<input id="frequency-range" type="range" name="points" min="0" max="100" step="1"/>
+	</p>
 
-<p id="info"></p>
+	<table>
+		<tr>
+			<td id="left-track">
+				<h3 id="left-track-title">Left Track</h3>
+				<p><button id="pause-left">Pause</button></p>
+			</td>
+			<td>
+				<p>
+					<label for="crossfade-range">Crossfade</label>
+					<input id="crossfade-range" type="range" name="points" min="0" max="100" step="1"/>
+				</p>
+				<p>
+					<label for="master-volume-range">Master & Gain</label>
+					<input id="master-volume-range" type="range" name="points" min="0" max="200" step="1"/>
+				</p>
+				<p id="clipping-info">
+					Clipping
+				</p>
+			</td>
+			<td id="right-track">
+				<h3 id="right-track-title">Right Track</h3>
+				<p><button id="pause-right">Pause</button></p>
+			</td>
+		</tr>
+	</table>
 
-<p id="out"></p>
+	<table>
+		<tr>
+			<td><canvas id="left-track-visualisation"></canvas></td>
+			<td><canvas id="right-track-visualisation"></canvas></td>
+		</tr>
+	</table>
 
+	<p>
+		<canvas id="filter-pad"></canvas>
+	</p>
+
+	<p id="info"></p>
+
+	<p id="out"></p>
+
+</section>
+<section id="loading-section">
+	Loading songs ...
+</section>
 </body>
 </html>

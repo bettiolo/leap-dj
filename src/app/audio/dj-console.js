@@ -108,3 +108,7 @@ DjConsole.prototype.getMasterVolume = function () {
 DjConsole.prototype.setTracks = function (tracks) {
 	this._tracks = tracks;
 };
+
+DjConsole.prototype.isLoaded = function () {
+	return this._tracks && this._tracks.length;
+}

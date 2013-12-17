@@ -10,6 +10,8 @@ function Ui(djConsole) {
 	this._rightTrackVisualisation = document.getElementById('right-track-visualisation');
 	this._leftTrackTitle = document.getElementById('left-track-title');
 	this._rightTrackTitle = document.getElementById('right-track-title');
+	this._mainSection = document.getElementById('main-section');
+	this._loadingSection = document.getElementById('loading-section');
 
 	this._djConsole = djConsole;
 	this._filterPad = new FilterPad(djConsole, document.getElementById('filter-pad'));
@@ -67,12 +69,10 @@ Ui.prototype._update = function () {
 	this._setCheckBox(this._filterEnabledCheckBox, this._djConsole.getFilterEnabled());
 	this._setText(this._leftTrackTitle, this._djConsole.leftTrack.getTrackInfo().title || 'n/a');
 	this._setText(this._rightTrackTitle, this._djConsole.rightTrack.getTrackInfo().title || 'n/a');
+	this._toggleCss(this._clippingInfo, this._djConsole.clippingMonitor.isClipping(), 'clipping', 'not-clipping');
+	this._toggleCss(this._mainSection, !this._djConsole.isLoaded(), 'hidden', '');
+	this._toggleCss(this._loadingSection, this._djConsole.isLoaded(), 'hidden', '');
 
-	if (this._djConsole.clippingMonitor.isClipping()) {
-		this._clippingInfo.className = 'clipping';
-	} else {
-		this._clippingInfo.className = 'not-clipping';
-	}
 	this._filterPad.draw();
 
 	var self = this;
@@ -87,14 +87,12 @@ Ui.prototype._setValue = function (element, value) {
 	var oldValue = Math.round(element.value);
 	value = Math.round(value);
 	if (oldValue != value) {
-		// console.log('Updated: ' + element.id + ' from ' + element.value + '% to ' + value + '%');
 		element.value = value;
 	}
 };
 
 Ui.prototype._setCheckBox = function (element, checked) {
 	if (element.checked != checked) {
-		// console.log('Updated: ' + element.id + ' from ' + element.checked + ' to ' + checked);
 		element.checked = checked;
 	}
 };
@@ -104,3 +102,11 @@ Ui.prototype._setText = function (element, text) {
 		element.innerText = text;
 	}
 };
+
+Ui.prototype._toggleCss = function (element, toggle, trueClass, falseClass) {
+	if (toggle) {
+		element.className = trueClass;
+	} else {
+		element.className = falseClass;
+	}
+}
