@@ -21,7 +21,6 @@ function LeapDj(djConsole) {
 	controller.loop(function(frame) {
 		self.processFrame(frame);
 		// self._processPositions();
-			// document.getElementById('out').innerHTML = frame.dump();
 	});
 	controller.on('ready', function() {
 		console.log("ready");
@@ -109,11 +108,6 @@ LeapDj.prototype._moveFinger = function (pointableId, pointableCount, x, y, z, d
 //	if (this._startZ === 0) {
 //		this._startZ = z;
 //	}
-
-//	document.getElementById('info').innerHTML =
-//		'POS: x:' + x + ', y:' + y + ' z:' + z + '<br />' +
-//			'START: x:' + this._startX  + ', y:' + this._startY + ' z:' + this._startZ;
-
 
 //	this._queueX.push(posX);
 //	this._queueY.push(posY);
