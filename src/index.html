@@ -31,7 +31,8 @@
 	</style>
 
 	<script src="lib/leap.min.js"></script>
-	<script src="lib/pointer-events.js"></script>
+	<script src="//connect.soundcloud.com/sdk.js"></script>
+
 	<script src="app/audio/dj-console.js"></script>
 	<script src="app/audio/clipping-monitor.js"></script>
 	<script src="app/audio/track.js"></script>
@@ -40,7 +41,8 @@
 	<script src="app/audio/filter-pad.js"></script>
 	<script src="app/audio/leap-dj.js"></script>
 	<script src="app/audio/main.js"></script>
-
+	<script src="app/soundcloud-client.js"></script>
+	<script src="app/audio/track-info.js"></script>
 </head>
 <body>
 
@@ -62,7 +64,7 @@
 <table>
 	<tr>
 		<td id="left-track">
-			<h2>Left Track</h2>
+			<h3 id="left-track-title">Left Track</h2>
 			<p><button id="pause-left">Pause</button></p>
 		</td>
 		<td>
@@ -79,7 +81,7 @@
 			</p>
 		</td>
 		<td id="right-track">
-			<h2>Right Track</h2>
+			<h3 id="right-track-title">Right Track</h2>
 			<p><button id="pause-right">Pause</button></p>
 		</td>
 	</tr>

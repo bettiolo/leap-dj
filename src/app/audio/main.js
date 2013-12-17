@@ -11,8 +11,14 @@ function init() {
 	var ui = new Ui(djConsole);
 	var leap = new LeapDj(djConsole);
 
-	djConsole.leftTrack.setSrc('music/track7.mp3');
-	djConsole.rightTrack.setSrc('music/track6.mp3');
-	djConsole.leftTrack.play();
-	djConsole.rightTrack.play();
+	var sc = new SoundCloud();
+	sc.loadTracks(function () {
+		djConsole.setTracks(sc.tracks);
+		var firstRandomTrack = Math.floor((Math.random() * sc.tracks.length) + 1);
+		var secondRandomTrack = Math.floor((Math.random() * sc.tracks.length) + 1);
+		djConsole.leftTrack.set(sc.tracks[firstRandomTrack]);
+		djConsole.rightTrack.set(sc.tracks[secondRandomTrack]);
+		djConsole.leftTrack.play();
+		djConsole.rightTrack.play();
+	});
 }

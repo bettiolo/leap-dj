@@ -104,3 +104,7 @@ DjConsole.prototype.setMasterVolume = function (fraction) {
 DjConsole.prototype.getMasterVolume = function () {
 	return this._masterGainFraction;
 };
+
+DjConsole.prototype.setTracks = function (tracks) {
+	this._tracks = tracks;
+};

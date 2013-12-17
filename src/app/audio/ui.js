@@ -8,6 +8,8 @@ function Ui(djConsole) {
 	this._clippingInfo = document.getElementById('clipping-info');
 	this._leftTrackVisualisation = document.getElementById('left-track-visualisation');
 	this._rightTrackVisualisation = document.getElementById('right-track-visualisation');
+	this._leftTrackTitle = document.getElementById('left-track-title');
+	this._rightTrackTitle = document.getElementById('right-track-title');
 
 	this._djConsole = djConsole;
 	this._filterPad = new FilterPad(djConsole, document.getElementById('filter-pad'));
@@ -63,6 +65,9 @@ Ui.prototype._update = function () {
 	this._setPercentValue(this._frequencyRange, this._djConsole.getFrequency());
 	this._setValue(this._filterTypeSelect, this._djConsole.getFilterType());
 	this._setCheckBox(this._filterEnabledCheckBox, this._djConsole.getFilterEnabled());
+	this._setText(this._leftTrackTitle, this._djConsole.leftTrack.getTrackInfo().title || 'n/a');
+	this._setText(this._rightTrackTitle, this._djConsole.rightTrack.getTrackInfo().title || 'n/a');
+
 	if (this._djConsole.clippingMonitor.isClipping()) {
 		this._clippingInfo.className = 'clipping';
 	} else {
@@ -91,5 +96,11 @@ Ui.prototype._setCheckBox = function (element, checked) {
 	if (element.checked != checked) {
 		// console.log('Updated: ' + element.id + ' from ' + element.checked + ' to ' + checked);
 		element.checked = checked;
+	}
+};
+
+Ui.prototype._setText = function (element, text) {
+	if (element.innerText != text) {
+		element.innerText = text;
 	}
 };

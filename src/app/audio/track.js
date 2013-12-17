@@ -17,6 +17,11 @@ Track.prototype.connect = function (audioNode) {
 
 };
 
+Track.prototype.set = function (trackInfo) {
+	this._trackInfo = trackInfo;
+	this.setSrc(trackInfo.url);
+}
+
 Track.prototype.setSrc = function (src) {
 	this._audio.src = src;
 };
@@ -44,3 +49,7 @@ Track.prototype.isPlaying = function () {
 Track.prototype.setGain = function (fraction) {
 	this._gain.gain.value = fraction;
 };
+
+Track.prototype.getTrackInfo = function () {
+	return this._trackInfo || {};
+}
