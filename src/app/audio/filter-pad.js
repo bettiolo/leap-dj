@@ -55,16 +55,19 @@ FilterPad.prototype.draw = function () {
 //
 
 	if(this._djConsole.getFilterEnabled()) {
-		var x = this._djConsole.getQuality() * this._canvas.width;
-		var y = (1 - this._djConsole.getFrequency()) * this._canvas.height;
+		var qualityFraction = this._djConsole.getQuality();
+		var frequencyFraction = this._djConsole.getFrequency();
+		var x = qualityFraction * this._canvas.width;
+		var y = (1 - frequencyFraction) * this._canvas.height;
 
 		this._context.beginPath();
-		this._context.fillStyle = "black";
-		this._context.fillText( " x: " + Math.round(x) + " y: " + Math.round(y), x + 20, y - 10);
+		this._context.fillStyle = 'black';
+		this._context.fillText( ' Q: ' + Math.round(qualityFraction * 100) + '%'
+							  + ' F: ' + Math.round(frequencyFraction * 100) + '%', x + 25, y + 3);
 
 		this._context.beginPath();
-		this._context.strokeStyle = "black";
-		this._context.lineWidth = "6";
+		this._context.strokeStyle = 'black';
+		this._context.lineWidth = 5;
 		this._context.arc(x, y, 20, 0, Math.PI * 2, true);
 		this._context.stroke();
 	}
