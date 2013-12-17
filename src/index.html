@@ -50,23 +50,6 @@
 <body>
 <section id="main-section" class="hidden">
 
-	<p>
-		<label for="filter-enabled">Enable filter</label>
-		<input id="filter-enabled" type="checkbox"/>
-		<label for="filter-type">Filter type</label>
-		<select id="filter-type">
-			<option value="1">HIGHPASS</option>
-			<option value="0">LOWPASS</option>
-		</select>
-	</p>
-
-	<p>
-		<label for="quality-range">Quality</label>
-		<input id="quality-range" type="range" name="points" min="0" max="100" step="1"/>
-		<label for="frequency-range">Frequency</label>
-		<input id="frequency-range" type="range" name="points" min="0" max="100" step="1"/>
-	</p>
-
 	<table>
 		<tr>
 			<td id="left-track">
@@ -107,6 +90,23 @@
 	<p id="info"></p>
 
 	<p id="out"></p>
+
+	<p>
+		<label for="filter-enabled">Enable filter</label>
+		<input id="filter-enabled" type="checkbox"/>
+		<label for="filter-type">Filter type</label>
+		<select id="filter-type">
+			<option value="1">HIGHPASS</option>
+			<option value="0">LOWPASS</option>
+		</select>
+	</p>
+
+	<p>
+		<label for="quality-range">Quality</label>
+		<input id="quality-range" type="range" name="points" min="0" max="100" step="1"/>
+		<label for="frequency-range">Frequency</label>
+		<input id="frequency-range" type="range" name="points" min="0" max="100" step="1"/>
+	</p>
 
 </section>
 <section id="loading-section">
