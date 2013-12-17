@@ -1,4 +1,4 @@
-jedi-dj-console
+Leap-DJ - Leap Motion DJ Console
 ========================
 
 Mix like a Jedi!
