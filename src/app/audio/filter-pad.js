@@ -13,11 +13,19 @@ FilterPad.prototype._setupCanvas = function () {
 	var self = this;
 	this._context.strokeStyle = "#ffffff";
 	this._context.lineWidth = 2;
-	this._canvas.addEventListener('pointerdown', function (e) { self._onPointerDown(e); }, false );
-	this._canvas.addEventListener('pointermove', function (e) { self._onPointerMove(e); }, false );
-	this._canvas.addEventListener('pointerup', function (e) { self._onPointerUp(e); }, false );
-	this._canvas.addEventListener('pointerleave', function (e) { self._onPointerUp(e); }, false );
+
+	this._canvas.addEventListener('mousedown', function (e) { self._onPointerDown(e); }, false );
+	this._canvas.addEventListener('mousemove', function (e) { self._onPointerMove(e); }, false );
+	this._canvas.addEventListener('mouseup', function (e) { self._onPointerUp(e); }, false );
+
+	this._canvas.addEventListener('touchstart', function (e) { self._onPointerDown(e); }, false );
+	this._canvas.addEventListener('touchmove', function (e) { self._onPointerMove(e); }, false );
+	this._canvas.addEventListener('touchend', function (e) { self._onPointerUp(e); }, false );
+
+	// document.body.addEventListener("mouseup", function (e) { self._onPointerUp(e); }, false );
+	// document.body.addEventListener("touchcancel", function (e) { self._onPointerUp(e); }, false );
 };
+
 
 FilterPad.prototype.draw = function () {
 	this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
@@ -28,6 +36,7 @@ FilterPad.prototype.draw = function () {
 								   this._canvas.width / 4, this._canvas.height / 4);
 		}
 	}
+
 //	for(var i = 0; i < this._touches.length; i++)
 //	{
 //		var touch = this._touches[i];
@@ -43,19 +52,22 @@ FilterPad.prototype.draw = function () {
 //		this._context.arc(x, y, 20, 0, Math.PI * 2, true);
 //		this._context.stroke();
 //	}
-	var x = this._djConsole.getQuality() * this._canvas.width;
-	var y = (1 - this._djConsole.getFrequency()) * this._canvas.height;
+//
 
-	this._context.beginPath();
-	this._context.fillStyle = "black";
-	this._context.fillText( " x: " + Math.round(x) + " y: " + Math.round(y), x + 20, y - 10);
+	if(this._djConsole.getFilterEnabled()) {
+		var x = this._djConsole.getQuality() * this._canvas.width;
+		var y = (1 - this._djConsole.getFrequency()) * this._canvas.height;
 
-	this._context.beginPath();
-	this._context.strokeStyle = "black";
-	this._context.lineWidth = "6";
-	this._context.arc(x, y, 20, 0, Math.PI * 2, true);
-	this._context.stroke();
+		this._context.beginPath();
+		this._context.fillStyle = "black";
+		this._context.fillText( " x: " + Math.round(x) + " y: " + Math.round(y), x + 20, y - 10);
 
+		this._context.beginPath();
+		this._context.strokeStyle = "black";
+		this._context.lineWidth = "6";
+		this._context.arc(x, y, 20, 0, Math.PI * 2, true);
+		this._context.stroke();
+	}
 };
 
 FilterPad.prototype._onPointerDown = function (e) {
@@ -79,6 +91,7 @@ FilterPad.prototype._onPointerDown = function (e) {
 		pointerId: e.pointerId
 	});
 	this._djConsole.setFilterEnabled(true);
+	this._filter(Math.abs(1 - fractionY), fractionX);
 }
 
 FilterPad.prototype._onPointerMove = function (e) {
