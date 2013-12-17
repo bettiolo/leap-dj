@@ -27,15 +27,14 @@ Visualiser.prototype.draw = function(canvas) {
 	this._analyser.smoothingTimeConstant = SMOOTHING;
 	this._analyser.fftSize = FFT_SIZE;
 
-	// Get the frequency data from the currently playing music
 	this._analyser.getByteFrequencyData(this.freqs);
 	this._analyser.getByteTimeDomainData(this.times);
 
 	// var width = Math.floor(1 / this.freqs.length);
-
 	var drawContext = canvas.getContext('2d');
 	canvas.width = WIDTH;
 	canvas.height = HEIGHT;
+
 	// Draw the frequency domain chart.
 	for (var i = 0; i < this._analyser.frequencyBinCount; i++) {
 		var value = this.freqs[i];
@@ -43,20 +42,22 @@ Visualiser.prototype.draw = function(canvas) {
 		var height = HEIGHT * percent;
 		var offset = HEIGHT - height - 1;
 		var barWidth = WIDTH / this._analyser.frequencyBinCount;
-		var hue = i/this._analyser.frequencyBinCount * 360;
+		var hue = i / this._analyser.frequencyBinCount * 360;
 		drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
 		drawContext.fillRect(i * barWidth, offset, barWidth, height);
 	}
 
 	// Draw the time domain chart.
+	drawContext.moveTo(0, HEIGHT / 2);
+	var barWidth = WIDTH / this._analyser.frequencyBinCount;
 	for (var i = 0; i < this._analyser.frequencyBinCount; i++) {
 		var value = this.times[i];
 		var percent = value / 256;
 		var height = HEIGHT * percent;
-		var offset = HEIGHT - height - 1;
-		var barWidth = WIDTH / this._analyser.frequencyBinCount;
-		drawContext.fillStyle = 'black';
-		drawContext.fillRect(i * barWidth, offset, 1, 2);
+		var ypos = HEIGHT - height - 1;
+		var xpos = i * barWidth;
+		drawContext.lineTo(xpos, ypos);
 	}
+	drawContext.stroke();
 
 };
