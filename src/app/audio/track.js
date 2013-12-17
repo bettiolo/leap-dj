@@ -1,6 +1,9 @@
-function Track(context) {
+function Track(context, endedCallback) {
 	this._context = context;
 	this._audio = new Audio();
+	this._audio.addEventListener('ended', function () {
+		endedCallback();
+	});
 	this._source = this._context.createMediaElementSource(this._audio);
 	this._gain = this._context.createGainNode();
 	this.visualiser = new Visualiser(this._context);
@@ -14,7 +17,6 @@ Track.prototype.connect = function (audioNode) {
 	//	this._gain.connect(audioNode);
 	// this.visualiser.disconnect();
 	this.visualiser.connect(audioNode);
-
 };
 
 Track.prototype.set = function (trackInfo) {
@@ -52,4 +54,16 @@ Track.prototype.setGain = function (fraction) {
 
 Track.prototype.getTrackInfo = function () {
 	return this._trackInfo || {};
-}
+};
+
+Track.prototype.getDuration = function () {
+	return this._audio.duration;
+};
+
+Track.prototype.getElapsed = function () {
+	return this._audio.currentTime;
+};
+
+Track.prototype.getRemaining = function () {
+	return this.getDuration() - this.getElapsed();
+};

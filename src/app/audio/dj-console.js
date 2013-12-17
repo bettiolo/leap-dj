@@ -9,8 +9,12 @@ function DjConsole() {
 
 
 	this._biquadFilter = this._context.createBiquadFilter();
-	this.leftTrack = new Track(this._context);
-	this.rightTrack = new Track(this._context);
+	this.leftTrack = new Track(this._context, function () {
+		self.playRandomTrack(self.leftTrack);
+	});
+	this.rightTrack = new Track(this._context, function () {
+		self.playRandomTrack(self.rightTrack);
+	});
 
 	this.setMasterVolume(1); // default volume 100%
 	this.setCrossfade(0); // default crossfade 100% left
@@ -111,4 +115,10 @@ DjConsole.prototype.setTracks = function (tracks) {
 
 DjConsole.prototype.isLoaded = function () {
 	return this._tracks && this._tracks.length;
+};
+
+DjConsole.prototype.playRandomTrack = function (track) {
+	var randomTrack = Math.floor((Math.random() * this._tracks.length) + 1);
+	track.set(this._tracks[randomTrack]);
+	track.play();
 }

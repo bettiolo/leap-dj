@@ -10,6 +10,8 @@ function Ui(djConsole) {
 	this._rightTrackVisualisation = document.getElementById('right-track-visualisation');
 	this._leftTrackTitle = document.getElementById('left-track-title');
 	this._rightTrackTitle = document.getElementById('right-track-title');
+	this._leftTrackInfo = document.getElementById('left-track-info');
+	this._rightTrackInfo = document.getElementById('right-track-info');
 	this._mainSection = document.getElementById('main-section');
 	this._loadingSection = document.getElementById('loading-section');
 
@@ -67,6 +69,8 @@ Ui.prototype._update = function () {
 	this._setCheckBox(this._filterEnabledCheckBox, this._djConsole.getFilterEnabled());
 	this._setText(this._leftTrackTitle, this._djConsole.leftTrack.getTrackInfo().title || 'n/a');
 	this._setText(this._rightTrackTitle, this._djConsole.rightTrack.getTrackInfo().title || 'n/a');
+	this._setTime(this._leftTrackInfo, this._djConsole.leftTrack.getRemaining());
+	this._setTime(this._rightTrackInfo, this._djConsole.rightTrack.getRemaining());
 	this._toggleCss(this._clippingInfo, this._djConsole.clippingMonitor.isClipping(), 'clipping', 'not-clipping');
 	this._toggleCss(this._mainSection, !this._djConsole.isLoaded(), 'hidden', '');
 	this._toggleCss(this._loadingSection, this._djConsole.isLoaded(), 'hidden', '');
@@ -103,6 +107,19 @@ Ui.prototype._setText = function (element, text) {
 	}
 };
 
+Ui.prototype._setTime = function (element, seconds) {
+	var text = '0s';
+	if (!!seconds) {
+		var minutes = Math.floor(seconds / 60);
+		var secondsPart = seconds - (minutes * 60);
+		secondsPart = Math.ceil(secondsPart);
+		text = '-' + minutes + ':' + this._pad(secondsPart, 2) + 's';
+	}
+	if (element.innerText != text) {
+		element.innerText = text;
+	}
+};
+
 Ui.prototype._toggleCss = function (element, toggle, trueClass, falseClass) {
 	if (toggle) {
 		element.className = trueClass;
@@ -110,3 +127,8 @@ Ui.prototype._toggleCss = function (element, toggle, trueClass, falseClass) {
 		element.className = falseClass;
 	}
 }
+
+Ui.prototype._pad = function (num, size) {
+	var s = "000000000" + num;
+	return s.substr(s.length-size);
+};
