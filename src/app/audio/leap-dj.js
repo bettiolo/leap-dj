@@ -1,9 +1,9 @@
 function LeapDj(djConsole) {
 	var self = this;
 	this._djConsole = djConsole;
-	this._queueX = [];
-	this._queueY = [];
-	this._queueZ = [];
+//	this._queueX = [];
+//	this._queueY = [];
+//	this._queueZ = [];
 
 	var pausedFrame = null;
 	var latestFrame = null;
@@ -47,12 +47,11 @@ function LeapDj(djConsole) {
 }
 
 LeapDj.prototype.processFrame = function (frame) {
-	if (frame.hands === undefined ) {
-		var handCount = 0
-	} else {
-		var handCount = frame.hands.length;
+	var handCount = 0
+	if (frame.hands !== undefined ) {
+		handCount = frame.hands.length;
 	}
-	var pointableCount = frame.pointables.length
+	var pointableCount = frame.pointables.length;
 
 	for (var handId = 0; handId != handCount; handId++) {
 		var hand = frame.hands[handId];
@@ -78,10 +77,14 @@ LeapDj.prototype.processFrame = function (frame) {
 		break;
 	}
 	if (pointableCount != 1) {
-		this._djConsole.setFilterEnabled(false);
-		this._startX = 0;
-		this._startY = 0;
-		this._startZ = 0;
+		if (this._filterWasEnabledByLeap) {
+			this._djConsole.setFilterEnabled(false);
+			this._filterWasEnabledByLeap = false;
+		}
+
+//		this._startX = 0;
+//		this._startY = 0;
+//		this._startZ = 0;
 	}
 
 };
@@ -140,7 +143,14 @@ LeapDj.prototype._moveFinger = function (pointableId, pointableCount, x, y, z, d
 //};
 
 LeapDj.prototype._processPosition = function (x, y, z) {
-	this._djConsole.setFilterEnabled(true);
+	if (!this._filterWasEnabledByLeap) {
+		this._filterWasAlreadyEnabled = this._djConsole.getFilterEnabled();
+	}
+	if (!this._filterWasAlreadyEnabled) {
+		this._djConsole.setFilterEnabled(true);
+		this._filterWasEnabledByLeap = true;
+	}
+
 	this._djConsole.setQuality( (x + 150) / 300 );
 	this._djConsole.setFrequency( (z + 150) / 300 );
 };
