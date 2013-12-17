@@ -48,32 +48,33 @@ function LeapDj(djConsole) {
 
 LeapDj.prototype.processFrame = function (frame) {
 	if (frame.hands === undefined ) {
-		var handsLength = 0
+		var handCount = 0
 	} else {
-		var handsLength = frame.hands.length;
+		var handCount = frame.hands.length;
 	}
+	var pointableCount = frame.pointables.length
 
-	for (var handId = 0, handCount = handsLength; handId != handCount; handId++) {
+	for (var handId = 0; handId != handCount; handId++) {
 		var hand = frame.hands[handId];
-		var posX = (hand.palmPosition[0] * 3);
-		var posY = (hand.palmPosition[2] * 3) - 200;
-		var posZ = (hand.palmPosition[1] * 3) - 400;
+		var palmX = (hand.palmPosition[0] * 3);
+		var palmY = (hand.palmPosition[2] * 3) - 200;
+		var palmZ = (hand.palmPosition[1] * 3) - 400;
 		var rotX = (hand._rotation[2] * 90);
 		var rotY = (hand._rotation[1] * 90);
 		var rotZ = (hand._rotation[0] * 90);
-		this._moveHand(hand.id, posX, posY, posZ, rotX, rotY, rotZ);
+		this._moveHand(hand.id, pointableCount, palmX, palmY, palmZ, rotX, rotY, rotZ);
 		break;
 	}
 
-	for (var pointableId = 0, pointableCount = frame.pointables.length; pointableId != pointableCount; pointableId++) {
+	for (var pointableId = 0; pointableId != pointableCount; pointableId++) {
 		var pointable = frame.pointables[pointableId];
-		var posX = (pointable.tipPosition[0] * 3);
-		var posY = (pointable.tipPosition[2] * 3) - 200;
-		var posZ = (pointable.tipPosition[1] * 3) - 400;
+		var pointableX = (pointable.tipPosition[0] * 3);
+		var pointableY = (pointable.tipPosition[2] * 3) - 200;
+		var pointableZ = (pointable.tipPosition[1] * 3) - 400;
 		var dirX = -(pointable.direction[1] * 90);
 		var dirY = -(pointable.direction[2] * 90);
 		var dirZ = (pointable.direction[0] * 90);
-		this._moveFinger(pointable.id, pointableCount, posX, posY, posZ, dirX, dirY, dirZ);
+		this._moveFinger(pointable.id, pointableCount, pointableX, pointableY, pointableZ, dirX, dirY, dirZ);
 		break;
 	}
 	if (pointableCount != 1) {
@@ -85,40 +86,38 @@ LeapDj.prototype.processFrame = function (frame) {
 
 };
 
-LeapDj.prototype._moveHand = function (handId, posX, posY, posZ, rotX, rotY, rotZ) {
+LeapDj.prototype._moveHand = function (handId, pointableCount, x, y, z, rotX, rotY, rotZ) {
+	if (pointableCount >= 4) {
+		this._processCrossfade(x, y, z);
+	}
 };
 
-LeapDj.prototype._moveFinger = function (fingerId, fingerCount, x, y, z, dirX, dirY, dirZ) {
-	x = Math.round(x);
-	y = Math.round(y);
-	z = Math.round(z);
+LeapDj.prototype._moveFinger = function (pointableId, pointableCount, x, y, z, dirX, dirY, dirZ) {
+//	x = Math.round(x);
+//	y = Math.round(y);
+//	z = Math.round(z);
 
-	if (this._startX === 0) {
-		this._startX = x;
-	}
-	if (this._startY === 0) {
-		this._startY = y;
-	}
-	if (this._startZ === 0) {
-		this._startZ = z;
-	}
+//	if (this._startX === 0) {
+//		this._startX = x;
+//	}
+//	if (this._startY === 0) {
+//		this._startY = y;
+//	}
+//	if (this._startZ === 0) {
+//		this._startZ = z;
+//	}
 
-	document.getElementById('info').innerHTML =
-		'POS: x:' + x + ', y:' + y + ' z:' + z + '<br />' +
-			'START: x:' + this._startX  + ', y:' + this._startY + ' z:' + this._startZ;
+//	document.getElementById('info').innerHTML =
+//		'POS: x:' + x + ', y:' + y + ' z:' + z + '<br />' +
+//			'START: x:' + this._startX  + ', y:' + this._startY + ' z:' + this._startZ;
 
 
 //	this._queueX.push(posX);
 //	this._queueY.push(posY);
 //	this._queueZ.push(posZ);
-	if (fingerCount == 1) {
+	if (pointableCount == 1) {
 		this._processPosition(x, y, z);
 	}
-
-	if (fingerCount >= 4) {
-		this._processCrossfade(x, y, z);
-	}
-
 };
 
 //LeapDj.prototype._processPositions = function () {
