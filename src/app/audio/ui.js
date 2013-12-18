@@ -25,11 +25,11 @@ function Ui(djConsole) {
 Ui.prototype._bind = function () {
 	var self = this;
 	document.getElementById("pause-left").addEventListener('click', function() {
-		self._djConsole.leftTrack.toggle();
+		self._djConsole.leftPlayer.toggle();
 	});
 
 	document.getElementById("pause-right").addEventListener('click', function() {
-		self._djConsole.rightTrack.toggle();
+		self._djConsole.rightPlayer.toggle();
 	});
 
 	this._qualityRange.addEventListener('change', function(event) {
@@ -67,16 +67,16 @@ Ui.prototype._update = function () {
 	this._setPercentValue(this._frequencyRange, this._djConsole.getFrequency());
 	this._setValue(this._filterTypeSelect, this._djConsole.getFilterType());
 	this._setCheckBox(this._filterEnabledCheckBox, this._djConsole.getFilterEnabled());
-	this._setText(this._leftTrackTitle, this._djConsole.leftTrack.getTrackInfo().title || 'n/a');
-	this._setText(this._rightTrackTitle, this._djConsole.rightTrack.getTrackInfo().title || 'n/a');
-	this._setTime(this._leftTrackInfo, this._djConsole.leftTrack.getRemaining());
-	this._setTime(this._rightTrackInfo, this._djConsole.rightTrack.getRemaining());
+	this._setText(this._leftTrackTitle, this._djConsole.leftPlayer.getTrackInfo().title || 'n/a');
+	this._setText(this._rightTrackTitle, this._djConsole.rightPlayer.getTrackInfo().title || 'n/a');
+	this._setTime(this._leftTrackInfo, this._djConsole.leftPlayer.getRemaining());
+	this._setTime(this._rightTrackInfo, this._djConsole.rightPlayer.getRemaining());
 	this._toggleCss(this._clippingInfo, this._djConsole.clippingMonitor.isClipping(), 'clipping', 'not-clipping');
 	this._toggleCss(this._mainSection, !this._djConsole.isLoaded(), 'hidden', '');
 	this._toggleCss(this._loadingSection, this._djConsole.isLoaded(), 'hidden', '');
 
-	this._djConsole.leftTrack.visualiser.draw(this._leftTrackVisualisation);
-	this._djConsole.rightTrack.visualiser.draw(this._rightTrackVisualisation);
+	this._djConsole.leftPlayer.visualiser.draw(this._leftTrackVisualisation);
+	this._djConsole.rightPlayer.visualiser.draw(this._rightTrackVisualisation);
 	this._filterPad.draw();
 
 	var self = this;

@@ -9,11 +9,11 @@ function DjConsole() {
 
 
 	this._biquadFilter = this._context.createBiquadFilter();
-	this.leftTrack = new Track(this._context, function () {
-		self.playRandomTrack(self.leftTrack);
+	this.leftPlayer = new Player(this._context, function () {
+		self.playRandomTrack(self.leftPlayer);
 	});
-	this.rightTrack = new Track(this._context, function () {
-		self.playRandomTrack(self.rightTrack);
+	this.rightPlayer = new Player(this._context, function () {
+		self.playRandomTrack(self.rightPlayer);
 	});
 
 	this.setMasterVolume(1); // default volume 100%
@@ -32,11 +32,11 @@ DjConsole.prototype.setFilterEnabled = function (enabled) {
 	this._biquadFilter.disconnect();
 	if (enabled) {
 		this._biquadFilter.connect(this._gain);
-		this.leftTrack.connect(this._biquadFilter);
-		this.rightTrack.connect(this._biquadFilter);
+		this.leftPlayer.connect(this._biquadFilter);
+		this.rightPlayer.connect(this._biquadFilter);
 	} else {
-		this.leftTrack.connect(this._gain);
-		this.rightTrack.connect(this._gain);
+		this.leftPlayer.connect(this._gain);
+		this.rightPlayer.connect(this._gain);
 	}
 };
 
@@ -91,8 +91,8 @@ DjConsole.prototype.setCrossfade = function (fraction) {
 	this._crossfadeFraction = fraction;
 	var gain1 = Math.cos(fraction * 0.5 * Math.PI);
 	var gain2 = Math.cos((1.0 - fraction) * 0.5 * Math.PI);
-	this.leftTrack.setGain(gain1);
-	this.rightTrack.setGain(gain2);
+	this.leftPlayer.setGain(gain1);
+	this.rightPlayer.setGain(gain2);
 };
 
 DjConsole.prototype.getCrossfade = function () {

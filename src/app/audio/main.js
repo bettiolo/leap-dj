@@ -14,7 +14,7 @@ function init() {
 	var sc = new SoundCloud();
 	sc.loadTracks(function () {
 		djConsole.setTracks(sc.tracks);
-		djConsole.playRandomTrack(djConsole.leftTrack);
-		djConsole.playRandomTrack(djConsole.rightTrack);
+		djConsole.playRandomTrack(djConsole.leftPlayer);
+		djConsole.playRandomTrack(djConsole.rightPlayer);
 	});
 }

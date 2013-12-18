@@ -1,4 +1,4 @@
-function Track(context, endedCallback) {
+function Player(context, endedCallback) {
 	this._context = context;
 	this._audio = new Audio();
 	this._audio.addEventListener('ended', function () {
@@ -12,31 +12,31 @@ function Track(context, endedCallback) {
 	this._gain.connect(this.visualiser.getAudioNode());
 }
 
-Track.prototype.connect = function (audioNode) {
+Player.prototype.connect = function (audioNode) {
 	//	this._gain.disconnect();
 	//	this._gain.connect(audioNode);
 	// this.visualiser.disconnect();
 	this.visualiser.connect(audioNode);
 };
 
-Track.prototype.set = function (trackInfo) {
+Player.prototype.set = function (trackInfo) {
 	this._trackInfo = trackInfo;
 	this.setSrc(trackInfo.url);
 }
 
-Track.prototype.setSrc = function (src) {
+Player.prototype.setSrc = function (src) {
 	this._audio.src = src;
 };
 
-Track.prototype.play = function () {
+Player.prototype.play = function () {
 	this._audio.play();
 };
 
-Track.prototype.pause = function () {
+Player.prototype.pause = function () {
 	this._audio.pause();
 };
 
-Track.prototype.toggle = function () {
+Player.prototype.toggle = function () {
 	if (this.isPlaying()) {
 		this.pause();
 	} else {
@@ -44,26 +44,26 @@ Track.prototype.toggle = function () {
 	}
 };
 
-Track.prototype.isPlaying = function () {
+Player.prototype.isPlaying = function () {
 	return !(this._audio.paused || this._audio.ended);
 };
 
-Track.prototype.setGain = function (fraction) {
+Player.prototype.setGain = function (fraction) {
 	this._gain.gain.value = fraction;
 };
 
-Track.prototype.getTrackInfo = function () {
+Player.prototype.getTrackInfo = function () {
 	return this._trackInfo || {};
 };
 
-Track.prototype.getDuration = function () {
+Player.prototype.getDuration = function () {
 	return this._audio.duration;
 };
 
-Track.prototype.getElapsed = function () {
+Player.prototype.getElapsed = function () {
 	return this._audio.currentTime;
 };
 
-Track.prototype.getRemaining = function () {
+Player.prototype.getRemaining = function () {
 	return this.getDuration() - this.getElapsed();
 };
