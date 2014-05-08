@@ -14,4 +14,4 @@ This hack was created for the London Music Hack Day 2013 and is one of the winni
 - [London Music Hack Day 2013](http://london.musichackday.org/2013)
 - [Hackerleague entry](https://www.hackerleague.org/hackathons/music-hack-day-london-2013/hacks/leap-motion-dj-console)
 - [Winning entries](http://www.rockol.com/uk/news-559059/music-hack-day-london-2013-the-hacks-and-the-winners)
-- [Leap Motion newsletter](https://labs.leapmotion.com/42/)
+- [Leap Motion newsletter](https://www.leapmotion.com/blog/42/)
