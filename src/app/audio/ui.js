@@ -61,10 +61,12 @@ Ui.prototype._update = function () {
 	if (!this._djConsole) {
 		return;
 	}
-	this._setPercentValue(this._masterVolumeRange, this._djConsole.getMasterVolume());
-	this._setPercentValue(this._crossfadeRange, this._djConsole.getCrossfade());
-	this._setPercentValue(this._qualityRange, this._djConsole.getQuality());
-	this._setPercentValue(this._frequencyRange, this._djConsole.getFrequency());
+	if (window.HasLeap) {
+		this._setPercentValue(this._masterVolumeRange, this._djConsole.getMasterVolume());
+		this._setPercentValue(this._crossfadeRange, this._djConsole.getCrossfade());
+		this._setPercentValue(this._qualityRange, this._djConsole.getQuality());
+		this._setPercentValue(this._frequencyRange, this._djConsole.getFrequency());
+	}
 	this._setValue(this._filterTypeSelect, this._djConsole.getFilterType());
 	this._setCheckBox(this._filterEnabledCheckBox, this._djConsole.getFilterEnabled());
 	this._setText(this._leftTrackTitle, this._djConsole.leftPlayer.getTrackInfo().title || 'n/a');

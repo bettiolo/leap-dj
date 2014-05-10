@@ -46,6 +46,7 @@ function LeapDj(djConsole) {
 }
 
 LeapDj.prototype.processFrame = function (frame) {
+	window.HasLeap = true;
 	var handCount = 0
 	if (frame.hands !== undefined ) {
 		handCount = frame.hands.length;
