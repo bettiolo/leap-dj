@@ -8,8 +8,10 @@ function SoundCloud() {
 
 SoundCloud.prototype.loadTracks = function (tracksLoadedCallBack) {
 	var self = this;
-	SC.get('/playlists/9165886', {}, function(playlist){
-		var soundCloudTracks = playlist.tracks;
+	SC.get('/playlists/9165886/tracks', {}, function(soundCloudTracks, error){
+		if (!!error) {
+			alert('Error loading connecting to SoundCloud: ' + error.message);
+		}
 		var trackCount = soundCloudTracks.length;
 		self.tracks = [];
 		for (var i = 0; i < trackCount; i++) {
