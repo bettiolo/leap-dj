@@ -1,7 +1,7 @@
 function ClippingMonitor(context) {
 	var self = this;
 	this._context = context;
-	this._clippingMeter = this._context.createJavaScriptNode(2048, 1, 1);
+	this._clippingMeter = this._context.createScriptProcessor(2048, 1, 1);
 	this._clippingMeter.onaudioprocess = function(e) { self._processAudio(e); };
 }
 

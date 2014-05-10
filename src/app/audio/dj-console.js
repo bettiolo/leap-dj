@@ -1,12 +1,17 @@
 function DjConsole() {
 	var self = this;
-	this._context = new webkitAudioContext();
+	window.AudioContext = window.AudioContext || window.webkitAudioContext;
+	try {
+		this._context = new AudioContext();
+	}
+	catch(e) {
+		alert('Web Audio API is not supported in this browser');
+	}
 	this.clippingMonitor = new ClippingMonitor(this._context);
 	this.clippingMonitor.connect(this._context.destination);
-	this._gain = this._context.createGainNode();
+	this._gain = this._context.createGain();
 	this._gain.connect(this.clippingMonitor.getAudioNode());
 	this._gain.connect(this._context.destination);
-
 
 	this._biquadFilter = this._context.createBiquadFilter();
 	this.leftPlayer = new Player(this._context, function () {
