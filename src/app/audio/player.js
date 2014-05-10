@@ -5,7 +5,7 @@ function Player(context, endedCallback) {
 		endedCallback();
 	});
 	this._source = this._context.createMediaElementSource(this._audio);
-	this._gain = this._context.createGainNode();
+	this._gain = this._context.createGain();
 	this.visualiser = new Visualiser(this._context);
 	// this._source.connect(this.visualiser.getAudioNode());
 	this._source.connect(this._gain);
