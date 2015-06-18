@@ -1,6 +1,7 @@
 function Player(context, endedCallback) {
 	this._context = context;
 	this._audio = new Audio();
+	this._audio.crossOrigin = "anonymous";
 	this._audio.addEventListener('ended', function () {
 		endedCallback();
 	});
@@ -20,9 +21,10 @@ Player.prototype.connect = function (audioNode) {
 };
 
 Player.prototype.set = function (trackInfo) {
+	console.log(trackInfo);
 	this._trackInfo = trackInfo;
 	this.setSrc(trackInfo.url);
-}
+};
 
 Player.prototype.setSrc = function (src) {
 	this._audio.src = src;
